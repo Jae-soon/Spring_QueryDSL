@@ -1,11 +1,14 @@
 package com.ll.exam.QueryDSL.user.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
-@Data
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class SiteUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,5 +21,4 @@ public class SiteUser {
 
     @Column(unique = true)
     private String email;
-
 }

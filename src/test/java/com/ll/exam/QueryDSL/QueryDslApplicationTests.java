@@ -10,6 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -70,6 +71,36 @@ class QueryDslApplicationTests {
 	void t5() {
 		SiteUser u1 = userRepository.getQslOldestUser();
 
+		assertThat(u1.getId()).isEqualTo(1L);
+		assertThat(u1.getUsername()).isEqualTo("user1");
+		assertThat(u1.getPassword()).isEqualTo("{noop}1234");
+		assertThat(u1.getEmail()).isEqualTo("user1@test.com");
+	}
+
+	@Test
+	@DisplayName("전체 회원을 오래된 순으로 정렬")
+	void t6() {
+		List<SiteUser> users = userRepository.getQslUsersAsc();
+
+		SiteUser u1 = users.get(0);
+		SiteUser u2 = users.get(1);
+
+		assertThat(u1.getId()).isEqualTo(1L);
+		assertThat(u1.getUsername()).isEqualTo("user1");
+		assertThat(u1.getPassword()).isEqualTo("{noop}1234");
+		assertThat(u1.getEmail()).isEqualTo("user1@test.com");
+		assertThat(u2.getId()).isEqualTo(2L);
+		assertThat(u2.getUsername()).isEqualTo("user2");
+		assertThat(u2.getPassword()).isEqualTo("{noop}1234");
+		assertThat(u2.getEmail()).isEqualTo("user2@test.com");
+	}
+
+	@Test
+	@DisplayName("유저 중 username 혹은 email에 user1이 포함된 회원")
+	void t7() {
+		List<SiteUser> users = userRepository.searchQsl("user1");
+
+		SiteUser u1 = users.get(0);
 		assertThat(u1.getId()).isEqualTo(1L);
 		assertThat(u1.getUsername()).isEqualTo("user1");
 		assertThat(u1.getPassword()).isEqualTo("{noop}1234");

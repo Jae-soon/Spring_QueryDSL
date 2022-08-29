@@ -38,4 +38,20 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .limit(1)
                 .fetchOne();
     }
+
+    @Override
+    public List<SiteUser> getQslUsersAsc() {
+        return jpaQueryFactory
+                .selectFrom(siteUser)
+                .orderBy(siteUser.id.asc())
+                .fetch();
+    }
+
+    @Override
+    public List<SiteUser> searchQsl(String query) {
+        return jpaQueryFactory
+                .selectFrom(siteUser)
+                .where(siteUser.username.contains(query).or(siteUser.email.contains(query)))
+                .fetch();
+    }
 }

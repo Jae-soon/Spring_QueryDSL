@@ -6,23 +6,33 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-class UserRepositoryTests {
+// 클래스의 각 테스트케이스에 전부 Transactional 붙은 것과 동일
+// @Test + @Transactional 조합은 자동으로 롤백을 유발시킨다.
+@Transactional
+@ActiveProfiles("test") // 테스트 모드 활성화
+class QueryDslApplicationTests {
 	@Autowired
 	private UserRepository userRepository;
 
 	@Test
 	@DisplayName("회원 생성")
 	void t1() {
-		SiteUser u1 = new SiteUser(null, "user1", "{noop}1234", "user1@test.com");
-		SiteUser u2 = new SiteUser(null, "user2", "{noop}1234", "user2@test.com");
+		SiteUser u3 = SiteUser.builder()
+				.username("user3")
+				.password("{noop}1234")
+				.email("user3@test.com")
+				.build();
+		SiteUser u4 = new SiteUser(null, "use r4", "{noop}1234", "user4@test.com");
 
-		userRepository.saveAll(Arrays.asList(u1, u2));
+		userRepository.saveAll(Arrays.asList(u3, u4));
 	}
 
 	@Test

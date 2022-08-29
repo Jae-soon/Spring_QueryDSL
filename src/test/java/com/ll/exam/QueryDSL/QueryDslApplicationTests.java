@@ -56,4 +56,12 @@ class QueryDslApplicationTests {
 		assertThat(u2.getPassword()).isEqualTo("{noop}1234");
 		assertThat(u2.getEmail()).isEqualTo("user2@test.com");
 	}
+
+	@Test
+	@DisplayName("모든 회원의 수")
+	void t4() {
+		long count = userRepository.getQslUserCount();
+
+		assertThat(count).isGreaterThan(0);
+	}
 }

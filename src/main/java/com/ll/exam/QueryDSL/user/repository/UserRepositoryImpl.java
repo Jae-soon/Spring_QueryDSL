@@ -2,8 +2,12 @@ package com.ll.exam.QueryDSL.user.repository;
 
 import com.ll.exam.QueryDSL.user.entity.QSiteUser;
 import com.ll.exam.QueryDSL.user.entity.SiteUser;
+import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -53,5 +57,19 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .selectFrom(siteUser)
                 .where(siteUser.username.contains(query).or(siteUser.email.contains(query)))
                 .fetch();
+    }
+
+    @Override
+    public Page<SiteUser> searchQsl(String kw, Pageable pageable) {
+
+        QueryResults<SiteUser> queryResults = jpaQueryFactory
+                .selectFrom(siteUser)
+                .where(siteUser.username.contains(kw).or(siteUser.email.contains(kw)))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+        List<SiteUser> content = queryResults.getResults();
+        long total = queryResults.getTotal();
+        return new PageImpl<>(content, pageable, total);
     }
 }

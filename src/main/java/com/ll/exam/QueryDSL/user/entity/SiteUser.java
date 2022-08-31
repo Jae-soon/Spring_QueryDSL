@@ -1,11 +1,15 @@
 package com.ll.exam.QueryDSL.user.entity;
 
+import com.ll.exam.QueryDSL.interestKeyword.entity.InterestKeyword;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -23,4 +27,12 @@ public class SiteUser {
 
     @Column(unique = true)
     private String email;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @Builder.Default
+    private Set<InterestKeyword> interestKeywords = new HashSet<>();
+
+    public void addInterestKeywordContent(String keywordContent) {
+        interestKeywords.add(new InterestKeyword(keywordContent));
+    }
 }

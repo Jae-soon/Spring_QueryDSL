@@ -21,7 +21,17 @@ public class TestInitData {
                     .password("{noop}1234")
                     .email("user1@test.com")
                     .build();
-            SiteUser u2 = new SiteUser(null, "user2", "{noop}1234", "user2@test.com");
+            SiteUser u2 = SiteUser.builder()
+                    .username("user2")
+                    .password("{noop}1234")
+                    .email("user2@test.com")
+                    .build();
+
+            u1.addInterestKeywordContent("축구");
+            u1.addInterestKeywordContent("농구");
+
+            u2.addInterestKeywordContent("클라이밍");
+            u2.addInterestKeywordContent("마라톤");
 
             userRepository.saveAll(Arrays.asList(u1, u2));
         };

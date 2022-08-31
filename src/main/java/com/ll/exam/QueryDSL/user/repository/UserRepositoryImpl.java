@@ -1,5 +1,6 @@
 package com.ll.exam.QueryDSL.user.repository;
 
+import com.ll.exam.QueryDSL.interestKeyword.entity.QInterestKeyword;
 import com.ll.exam.QueryDSL.user.entity.QSiteUser;
 import com.ll.exam.QueryDSL.user.entity.SiteUser;
 import com.querydsl.core.QueryResults;
@@ -18,6 +19,7 @@ import org.springframework.data.support.PageableExecutionUtils;
 import java.util.List;
 import java.util.function.LongSupplier;
 
+import static com.ll.exam.QueryDSL.interestKeyword.entity.QInterestKeyword.interestKeyword;
 import static com.ll.exam.QueryDSL.user.entity.QSiteUser.siteUser;
 
 @RequiredArgsConstructor
@@ -105,5 +107,15 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 );
 
         return PageableExecutionUtils.getPage(users, pageable, usersCountQuery::fetchOne);
+    }
+
+    @Override
+    public List<SiteUser> getQslUsersByInterestKeyword(String keywordContent) {
+
+        return jpaQueryFactory
+                .selectFrom(siteUser)
+                .innerJoin(siteUser.interestKeywords, interestKeyword) // Q 클래스 내의 기본 Alias
+                .where(interestKeyword.content.eq(keywordContent))
+                .fetch();
     }
 }

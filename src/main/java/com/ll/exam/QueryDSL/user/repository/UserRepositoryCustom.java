@@ -15,4 +15,6 @@ public interface UserRepositoryCustom {
 
     List<SiteUser> searchQsl(String query);
     Page<SiteUser> searchQsl(String kw, Pageable pageable);
+
+    List<SiteUser> getQslUsersByInterestKeyword(String keywordContent);
 }

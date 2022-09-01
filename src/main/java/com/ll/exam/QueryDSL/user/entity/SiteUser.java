@@ -40,7 +40,13 @@ public class SiteUser {
     @Builder.Default
     private Set<SiteUser> followers = new HashSet<>();
 
-    public void addFollower(SiteUser follower) {
-        followers.add(follower);
+//    public void addFollower(SiteUser follower) {
+//        followers.add(follower);
+//    }
+
+    public void follow(SiteUser following) { // u2의 팔로워들
+        following.getFollowers().add(this); // u2의 팔로워들에 u1을 추가한다.
+        // 이 부분은 같은 클래스 내에 있어 private가 무시되지만, 다른 클래스에 존재할 경우 실행이 되지 않기에 쓰지 않는 것이 좋다.
+        // following.followers.add(this);
     }
 }

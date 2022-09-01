@@ -45,6 +45,10 @@ public class SiteUser {
 //    }
 
     public void follow(SiteUser following) { // u2의 팔로워들
+        if (this == following) return; // follow할 사람이 본인일 경우 그냥 return
+        if (following == null) return; // 팔로우 할 사람이 없을 경우 그냥 return
+        if (this.getId() == following.getId()) return; // 팔로우 할 사람의 id와 본인의 id가 같을 경우 그냥 return
+
         following.getFollowers().add(this); // u2의 팔로워들에 u1을 추가한다.
         // 이 부분은 같은 클래스 내에 있어 private가 무시되지만, 다른 클래스에 존재할 경우 실행이 되지 않기에 쓰지 않는 것이 좋다.
         // following.followers.add(this);
